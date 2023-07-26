@@ -11,6 +11,8 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3001 }
+
   # Show full error reports.
   config.consider_all_requests_local = true
 
@@ -62,4 +64,6 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  # EDITOR='code --wait' rails credentials:edit
 end
