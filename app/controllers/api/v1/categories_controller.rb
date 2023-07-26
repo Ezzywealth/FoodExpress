@@ -1,7 +1,7 @@
 module Api
   module V1
     class CategoriesController < ApplicationController
-      before_action :set_category, only: %i[edit update show destory]
+      before_action :set_category, only: %i[edit update show destroy]
       #  before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
 
       def index
@@ -20,11 +20,8 @@ module Api
       end
 
       def destroy
-        if @category.destroy
-          render json: Category.all, status: :ok
-        else
-          render json: @category.errors
-        end
+        @category.destroy
+        render json: Category.all, status: :ok
       end
 
       private

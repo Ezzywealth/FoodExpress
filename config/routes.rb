@@ -17,7 +17,8 @@ Rails.application.routes.draw do
       resources :users
       resources :categories
       resources :subcategories
-      resources :menu_items
+      resources :restaurants
+      resources :menuitems
    end
   end
 end
