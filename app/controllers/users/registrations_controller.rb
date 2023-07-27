@@ -12,8 +12,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
       }
     else
       render json: {
-        status: { message: "User couldn't be created successfully. #{current_user.errors.full_messages.to_sentence}" }
+        status: { message: "User couldn't be created successfully. #{current_user.errors.full_messages}" }
       }, status: :unprocessable_entity
     end
+  end
+
+
+  def sign_up_params
+    params.require(:user).permit(:email, :name, :password)
   end
 end
