@@ -5,5 +5,4 @@ class Order < ApplicationRecord
   validates :quantity, presence: true
   validates :total_amount, presence: true
   validates :order_status, presence: true
-
 end

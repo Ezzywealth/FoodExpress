@@ -3,13 +3,12 @@ class MenuItem < ApplicationRecord
   validates :price, presence: true
   validates :description, presence: true
   validates :category_id, presence: true
-  validates :sub_category_id, presence: true
+  validates :subcategory_id, presence: true
   validates :restaurant_id, presence: true
 
   belongs_to :category
-  belongs_to :sub_category
+  belongs_to :sub_category, foreign_key: 'subcategory_id'
   belongs_to :restaurant
 
   has_many :order
-
 end
