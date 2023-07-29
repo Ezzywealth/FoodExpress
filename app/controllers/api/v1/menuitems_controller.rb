@@ -8,12 +8,12 @@ module Api
         menus = MenuItem.all
         menu = menus.map do |menu|
          {
-          user_id: menu.user_id
+          user_id: menu.user_id,
           category_id: menu.category_id,
-          subcategory_id: menu.subcategory_id
-          restaurant_id: menu.restaurant_id
+          subcategory_id: menu.subcategory_id,
+          restaurant_id: menu.restaurant_id,
           id: menu.id,
-          foodimg: rails_blob_url(menu.foodimg),
+          foodimg: menu.foodimg.present? ? rails_blob_url(menu.foodimg) : nil,
           name: menu.name,
           description: menu.description,
           price: menu.price

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name userimg email password])
-    devise_parameter_sanitizer.permit(:account_update, keys: %i[name userimg])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name email password])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[name])
   end
 end
