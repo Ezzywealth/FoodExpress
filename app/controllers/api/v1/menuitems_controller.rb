@@ -6,12 +6,26 @@ module Api
 
       def index
         menus = MenuItem.all
-        render json: menus, status: :ok
+        menu = menus.map do |menu|
+         {
+          user_id: menu.user_id
+          category_id: menu.category_id,
+          subcategory_id: menu.subcategory_id
+          restaurant_id: menu.restaurant_id
+          id: menu.id,
+          foodimg: rails_blob_url(menu.foodimg),
+          name: menu.name,
+          description: menu.description,
+          price: menu.price
+         }
+        end
+        render json: menu, status: :ok
       end
 
       def create
         menu = MenuItem.new(menu_params)
         menu.user_id = 1
+        menu.foodimg.attach(params[:menuitem][:foodimg]) if params[:menuitem][:foodimg]
         if menu.save
           render json: menu
         else
@@ -27,7 +41,7 @@ module Api
       private
 
       def menu_params
-        params.require(:menuitem).permit(:name, :category_id, :subcategory_id, :restaurant_id, :description, :price)
+        params.require(:menuitem).permit(:name, :category_id, :subcategory_id, :restaurant_id, :description, :price, :foodimg)
       end
 
       def set_menu
