@@ -7,10 +7,16 @@ ruby '3.2.2'
 gem 'rails', '~> 7.0.5'
 
 gem 'devise'
+
 gem 'devise-jwt'
+
 gem 'jsonapi-serializer'
 
+gem 'cloudinary'
+
 gem 'rubocop', '>= 1.0', '< 2.0'
+
+gem 'ffi'
 
 # Use sqlite3 as the database for Active Record
 # gem "sqlite3", "~> 1.4"

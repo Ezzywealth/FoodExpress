@@ -6,4 +6,6 @@ class Restaurant < ApplicationRecord
   # validates :email, presence: true
   validates :description, presence: true
   # validates :image, presence: true
+
+  has_one_attached :resimg
 end
