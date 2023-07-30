@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_28_222022) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_171456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,7 +50,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_222022) do
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
-  create_table "deliveries", force: :cascade do |t|
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "email"
+    t.bigint "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -71,24 +75,50 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_222022) do
     t.index ["user_id"], name: "index_menu_items_on_user_id"
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "payment_id"
-    t.boolean "order_status"
-    t.integer "total"
+  create_table "menu_orders", force: :cascade do |t|
+    t.bigint "menuItem_id", null: false
+    t.bigint "order_id", null: false
+    t.integer "quantity"
+    t.integer "total_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["menuItem_id"], name: "index_menu_orders_on_menuItem_id"
+    t.index ["order_id"], name: "index_menu_orders_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "payment_id", null: false
+    t.integer "total_amount"
+    t.boolean "fulfilled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
-    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "payments", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.boolean "status", null: false
-    t.integer "total"
+    t.bigint "customer_id", null: false
+    t.boolean "fulfilled"
+    t.integer "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_payments_on_user_id"
+    t.index ["customer_id"], name: "index_payments_on_customer_id"
+  end
+
+  create_table "restaurant_orders", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "menuItem_id", null: false
+    t.bigint "restaurant_id", null: false
+    t.bigint "payment_id", null: false
+    t.integer "quantity"
+    t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_restaurant_orders_on_customer_id"
+    t.index ["menuItem_id"], name: "index_restaurant_orders_on_menuItem_id"
+    t.index ["payment_id"], name: "index_restaurant_orders_on_payment_id"
+    t.index ["restaurant_id"], name: "index_restaurant_orders_on_restaurant_id"
   end
 
   create_table "restaurants", force: :cascade do |t|
@@ -132,9 +162,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_28_222022) do
   add_foreign_key "menu_items", "restaurants"
   add_foreign_key "menu_items", "sub_categories", column: "subcategory_id"
   add_foreign_key "menu_items", "users"
+  add_foreign_key "menu_orders", "menu_items", column: "menuItem_id"
+  add_foreign_key "menu_orders", "orders"
+  add_foreign_key "orders", "customers"
   add_foreign_key "orders", "payments"
-  add_foreign_key "orders", "users"
-  add_foreign_key "payments", "users"
+  add_foreign_key "payments", "customers"
+  add_foreign_key "restaurant_orders", "customers"
+  add_foreign_key "restaurant_orders", "menu_items", column: "menuItem_id"
+  add_foreign_key "restaurant_orders", "payments"
+  add_foreign_key "restaurant_orders", "restaurants"
   add_foreign_key "restaurants", "users"
   add_foreign_key "sub_categories", "categories"
   add_foreign_key "sub_categories", "users"
