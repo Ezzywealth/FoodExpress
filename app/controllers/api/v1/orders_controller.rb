@@ -6,6 +6,14 @@ module Api
 
          render json: [payment, order], status: :ok
       end
+      #create payment
+      payment = Payment.new(customer_id: customer.id, total_amount: 0, fulfilled: false)
+      payment.save
+
+      # #create order
+      order = Order.new(customer_id: customer.id,total_amount: 0, fulfilled: false, payment_id: payment.id)
+      order.save
+     
 
       private
       def orders_params
