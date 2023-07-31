@@ -7,6 +7,10 @@ class ApplicationController < ActionController::API
                                Rails.application.credentials.devise_jwt_secret_key!).first
       current_user = User.find(jwt_payload['sub'])
       current_user
+
+    else
+      current_user = nil
+      current_user
     end
   end
 
