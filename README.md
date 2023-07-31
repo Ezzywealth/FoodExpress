@@ -1,24 +1,29 @@
-# README
+## Password Update
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+- send a PUT method to api/v1/password
+<!-- params = {
+  user:{
+    password: newPassword,
+    current_password: oldPassword,
+    password_confirmation: newPassword
+  }
+} -->
 
-Things you may want to cover:
+## Password Reset
 
-* Ruby version
+- send a POST method to /api/v1/password
+<!-- params = {
+  user:{
+    email
+  }
+} -->
+- a confirmation link with the reset token will be sent back, extract the reset_password_token and make another request
+<!-- params = {
+  user: {
+    reset_password_token,
+    password,
+    password_confirmation,
+    email
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+  }
+} -->
