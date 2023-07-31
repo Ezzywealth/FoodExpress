@@ -21,7 +21,8 @@ Rails.application.routes.draw do
   controllers: {
     sessions: 'users/sessions', # Custom path for sessions controller
     registrations: 'users/registrations', # Custom path for registrations controller
-    confirmations: 'users/confirmations' # Custom path for confirmations controller
+    confirmations: 'users/confirmations', # Custom path for confirmations controller
+    passwords: 'users/passwords' # Custom path for passwords controller
   }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
