@@ -59,6 +59,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_171456) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "deliveries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "menu_items", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "category_id", null: false
@@ -90,6 +95,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_171456) do
     t.bigint "customer_id", null: false
     t.bigint "payment_id", null: false
     t.integer "total_amount"
+    t.integer "total_quantity"
     t.boolean "fulfilled"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -141,6 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_171456) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
@@ -153,7 +160,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_171456) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.string "name", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
