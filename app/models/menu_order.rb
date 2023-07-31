@@ -6,4 +6,13 @@ class MenuOrder < ApplicationRecord
 
   belongs_to :menuItem
   belongs_to :order
+
+  after_save :update_total_amount
+
+  private
+
+  def update_total_amount
+    total = order.menu_orders.sum(:total_price)
+    order.update(total_amount: total)
+  end
 end

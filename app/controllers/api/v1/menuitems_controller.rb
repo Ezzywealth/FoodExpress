@@ -6,18 +6,18 @@ module Api
 
       def index
         menus = MenuItem.all
-        menu = menus.map do |menu|
-         {
-          user_id: menu.user_id,
-          category_id: menu.category_id,
-          subcategory_id: menu.subcategory_id,
-          restaurant_id: menu.restaurant_id,
-          id: menu.id,
-          foodimg: menu.foodimg.present? ? rails_blob_url(menu.foodimg) : nil,
-          name: menu.name,
-          description: menu.description,
-          price: menu.price
-         }
+        menu = menus.map do |menuu|
+          {
+            user_id: menuu.user_id,
+            category_id: menuu.category_id,
+            subcategory_id: menuu.subcategory_id,
+            restaurant_id: menuu.restaurant_id,
+            id: menuu.id,
+            foodimg: menuu.foodimg.present? ? rails_blob_url(menuu.foodimg) : nil,
+            name: menuu.name,
+            description: menuu.description,
+            price: menuu.price
+          }
         end
         render json: menu, status: :ok
       end
@@ -41,7 +41,8 @@ module Api
       private
 
       def menu_params
-        params.require(:menuitem).permit(:name, :category_id, :subcategory_id, :restaurant_id, :description, :price, :foodimg)
+        params.require(:menuitem).permit(:name, :category_id, :subcategory_id, :restaurant_id, :description, :price,
+                                         :foodimg)
       end
 
       def set_menu
