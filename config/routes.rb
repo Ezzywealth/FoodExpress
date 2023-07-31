@@ -5,6 +5,10 @@ Rails.application.routes.draw do
       resources :subcategories
       resources :restaurants
       resources :menuitems
+      resources :menuorders
+      resources :restaurantorders
+      resources :orders
+      resources :customers
       resources :users, only: [:index, :show, :update, :destroy]
     end
   end

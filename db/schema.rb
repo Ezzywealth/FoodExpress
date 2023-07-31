@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_29_105119) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_171456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "categories", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -22,7 +50,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_29_105119) do
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
-  create_table "deliveries", force: :cascade do |t|
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "email"
+    t.bigint "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -43,24 +75,50 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_29_105119) do
     t.index ["user_id"], name: "index_menu_items_on_user_id"
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "payment_id"
-    t.boolean "order_status"
-    t.integer "total"
+  create_table "menu_orders", force: :cascade do |t|
+    t.bigint "menuItem_id", null: false
+    t.bigint "order_id", null: false
+    t.integer "quantity"
+    t.integer "total_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["menuItem_id"], name: "index_menu_orders_on_menuItem_id"
+    t.index ["order_id"], name: "index_menu_orders_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "payment_id", null: false
+    t.integer "total_amount"
+    t.boolean "fulfilled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["payment_id"], name: "index_orders_on_payment_id"
-    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "payments", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.boolean "status", null: false
-    t.integer "total"
+    t.bigint "customer_id", null: false
+    t.boolean "fulfilled"
+    t.integer "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_payments_on_user_id"
+    t.index ["customer_id"], name: "index_payments_on_customer_id"
+  end
+
+  create_table "restaurant_orders", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "menuItem_id", null: false
+    t.bigint "restaurant_id", null: false
+    t.bigint "payment_id", null: false
+    t.integer "quantity"
+    t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_restaurant_orders_on_customer_id"
+    t.index ["menuItem_id"], name: "index_restaurant_orders_on_menuItem_id"
+    t.index ["payment_id"], name: "index_restaurant_orders_on_payment_id"
+    t.index ["restaurant_id"], name: "index_restaurant_orders_on_restaurant_id"
   end
 
   create_table "restaurants", force: :cascade do |t|
@@ -83,7 +141,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_29_105119) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
@@ -96,19 +153,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_29_105119) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
+    t.string "name", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "users"
   add_foreign_key "menu_items", "categories"
   add_foreign_key "menu_items", "restaurants"
   add_foreign_key "menu_items", "sub_categories", column: "subcategory_id"
   add_foreign_key "menu_items", "users"
+  add_foreign_key "menu_orders", "menu_items", column: "menuItem_id"
+  add_foreign_key "menu_orders", "orders"
+  add_foreign_key "orders", "customers"
   add_foreign_key "orders", "payments"
-  add_foreign_key "orders", "users"
-  add_foreign_key "payments", "users"
+  add_foreign_key "payments", "customers"
+  add_foreign_key "restaurant_orders", "customers"
+  add_foreign_key "restaurant_orders", "menu_items", column: "menuItem_id"
+  add_foreign_key "restaurant_orders", "payments"
+  add_foreign_key "restaurant_orders", "restaurants"
   add_foreign_key "restaurants", "users"
   add_foreign_key "sub_categories", "categories"
   add_foreign_key "sub_categories", "users"
