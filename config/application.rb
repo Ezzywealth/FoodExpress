@@ -23,5 +23,11 @@ module FoodExpress
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    Cloudinary.config do |config|
+      config.cloud_name = "dlqlov316"
+      config.api_key = "573762335141253"
+      config.api_secret = "LZazvc0_-1pripdsBCGGylVDork"
+      config.secure = true # Use SSL for secure connections
+    end
   end
 end
