@@ -3,19 +3,13 @@ class Users::PasswordsController < Devise::PasswordsController
   respond_to :json
 
   # GET /resource/password/new
-  def new
-    super
-  end
+
 
   # POST /resource/password
-  def create
-    super
-  end
+
 
   # GET /resource/password/edit?reset_password_token=abcdef
-  def edit
-    super
-  end
+
 
   # PUT /resource/password
   # method to change a user password
@@ -33,37 +27,33 @@ class Users::PasswordsController < Devise::PasswordsController
 
 
 
-  def after_resetting_password_path_for(resource)
-    super(resource)
-  end
+
 
   # The path used after sending reset password instructions
-  def after_sending_reset_password_instructions_path_for(resource_name)
-    super(resource_name)
-  end
+
 
   def update_password_with_current_password
     if password_params[:password].blank?
       render json: {
-        status: { code: 403, message: "Password cannot be blank." }
+        status: { code: 403, message: 'Password cannot be blank.' }
       }, status: :unprocessable_entity
       return
 
     elsif password_params[:password_confirmation].blank?
       render json: {
-        status: { code: 403, message: "Password confirmation cannot be blank." }
+        status: { code: 403, message: 'Password confirmation cannot be blank.' }
       }, status: :unprocessable_entity
       return
 
     elsif password_params[:password] != password_params[:password_confirmation]
       render json: {
-        status: { code: 403, message: "Password and password confirmation do not match." }
+        status: { code: 403, message: 'Password and password confirmation do not match.' }
       }, status: :unprocessable_entity
       return
 
     elsif password_params[:password].length < 8
       render json: {
-        status: { code: 403, message: "Password must be at least 8 characters long." }
+        status: { code: 403, message: 'Password must be at least 8 characters long.' }
       }, status: :unprocessable_entity
       return
     end
@@ -84,37 +74,36 @@ class Users::PasswordsController < Devise::PasswordsController
       else
         # Handle the case when the password update was not successful
         render json: {
-          status: { message: "Password could not be updated." }
+          status: { message: 'Password could not be updated.' }
         }, status: :unprocessable_entity
       end
     else
       # Handle the case when the current password provided is incorrect
       render json: {
-        status: { code: 403, message: "Current password is incorrect." }
+        status: { code: 403, message: 'Current password is incorrect.' }
       }, status: :unprocessable_entity
     end
-
   end
 
   def initiate_password_reset
     if password_params[:password].blank?
       render json: {
-        status: { code: 403, message: "Password cannot be blank." }
+        status: { code: 403, message: 'Password cannot be blank.' }
       }, status: :unprocessable_entity
       return
     elsif password_params[:password_confirmation].blank?
       render json: {
-        status: { code: 403, message: "Password confirmation cannot be blank." }
+        status: { code: 403, message: 'Password confirmation cannot be blank.' }
       }, status: :unprocessable_entity
       return
     elsif password_params[:password] != password_params[:password_confirmation]
       render json: {
-        status: { code: 403, message: "Password and password confirmation do not match." }
+        status: { code: 403, message: 'Password and password confirmation do not match.' }
       }, status: :unprocessable_entity
       return
     elsif password_params[:password].length < 8
       render json: {
-        status: { code: 403, message: "Password must be at least 8 characters long." }
+        status: { code: 403, message: 'Password must be at least 8 characters long.' }
       }, status: :unprocessable_entity
       return
     end
@@ -138,7 +127,7 @@ class Users::PasswordsController < Devise::PasswordsController
       else
         # Handle the case when the password update was not successful
         render json: {
-          status: { message: "Password could not be updated." }
+          status: { message: 'Password could not be updated.' }
         }, status: :unprocessable_entity
       end
     else
@@ -148,7 +137,6 @@ class Users::PasswordsController < Devise::PasswordsController
       }, status: :unprocessable_entity
     end
   end
-
 
   def password_params
     params.require(:user).permit(:current_password, :password, :password_confirmation, :reset_password_token, :email)
