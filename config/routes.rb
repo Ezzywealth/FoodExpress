@@ -24,8 +24,5 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations', # Custom path for confirmations controller
     passwords: 'users/passwords' # Custom path for passwords controller
   }
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

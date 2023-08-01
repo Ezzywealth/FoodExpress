@@ -43,7 +43,6 @@ class Users::PasswordsController < Devise::PasswordsController
   end
 
   # PUT /resource/password
-  # method to change a user password
   def update
     if current_user.present?
       # User is authenticated, trying to update password using current password
