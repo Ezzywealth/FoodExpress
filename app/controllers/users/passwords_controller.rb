@@ -2,24 +2,24 @@ class Users::PasswordsController < Devise::PasswordsController
   include RackSessionsFix
   respond_to :json
 
-# POST /resource/password
-def create
-  self.resource = resource_class.send_reset_password_instructions(resource_params)
-  yield resource if block_given?
+  # POST /resource/password
+  def create
+    self.resource = resource_class.send_reset_password_instructions(resource_params)
+    yield resource if block_given?
 
-  if successfully_sent?(resource)
-    render json: {
-      message: "Password reset instructions sent successfully",
-      status: "success",
-      code: 201
-    }, status: :ok
-  else
-    render json: {
-      message: "Password reset instructions could not be sent",
-      status: self.resource.errors.messages,
-    }, status: :unprocessable_entity
+    if successfully_sent?(resource)
+      render json: {
+        message: 'Password reset instructions sent successfully',
+        status: 'success',
+        code: 201
+      }, status: :ok
+    else
+      render json: {
+        message: 'Password reset instructions could not be sent',
+        status: resource.errors.messages
+      }, status: :unprocessable_entity
+    end
   end
-end
 
   # GET /resource/password/edit?reset_password_token=abcdef
   def edit
@@ -29,19 +29,18 @@ end
       render json: {
         status: {
           code: 200,
-          message: "Token Valid"
-          }
-        },status: :ok
+          message: 'Token Valid'
+        }
+      }, status: :ok
     else
       render json: {
         status: {
           code: 403,
-          message: "Invalid token"
-          }
-        }, status: :unprocessable_entity
+          message: 'Invalid token'
+        }
+      }, status: :unprocessable_entity
     end
   end
-
 
   # PUT /resource/password
   # method to change a user password
@@ -155,24 +154,21 @@ end
     else
       # Handle the case when the user with the given email does not exist
       render json: {
-        status: { code: 403, message: "There was an error updating your password", errors: resource.errors }
+        status: { code: 403, message: 'There was an error updating your password', errors: resource.errors }
       }, status: :unprocessable_entity
     end
-
   end
 
   def check_valid_token
     token = Devise.token_generator.digest(User, :reset_password_token, params['reset_password_token'])
     user = User.find_by(reset_password_token: token)
-    if user.present? && user.reset_password_period_valid?
-      return true
-    else
-      return false
-    end
+    return true if user.present? && user.reset_password_period_valid?
+
+
+    false
   end
 
   def password_params
     params.require(:user).permit(:current_password, :password, :password_confirmation, :reset_password_token, :email)
   end
 end
-
