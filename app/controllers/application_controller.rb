@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
       User.find(jwt_payload['sub'])
 
     end
-    current_user
+    current_user = nil
   end
 
   protected
