@@ -16,7 +16,7 @@ def create
   else
     render json: {
       message: "Password reset instructions could not be sent",
-      status: "error",
+      status: self.resource.errors.messages,
     }, status: :unprocessable_entity
   end
 end
