@@ -2,7 +2,7 @@ module Api
   module V1
     class CategoriesController < ApplicationController
       before_action :set_category, only: %i[edit update show destroy]
-      # before_action :authenticate_user!,  only: [:index, :edit, :update, :destory, :create]
+      before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
 
       def index
         categories = Category.all

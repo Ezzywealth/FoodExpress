@@ -2,7 +2,7 @@ module Api
   module V1
     class RestaurantsController < ApplicationController
       before_action :set_restaurant, only: %i[edit update show destroy]
-       before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
+      before_action :authenticate_user!,  only: [ :edit, :update, :destory, :create]
 
       def index
         restaurants = Restaurant.all

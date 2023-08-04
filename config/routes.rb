@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       end
       resources :menuitems do
         collection do
-          get 'menulist'
+          post 'menulist'
         end
       end
       resources :menuorders

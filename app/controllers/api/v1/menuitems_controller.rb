@@ -2,7 +2,7 @@ module Api
   module V1
     class MenuitemsController < ApplicationController
       before_action :set_menu, only: %i[edit update show destroy]
-      before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
+      before_action :authenticate_user!,  only: [:edit, :update, :destory, :create, :menulist]
 
       def index
         menus = MenuItem.all
@@ -39,11 +39,15 @@ module Api
       end
 
       def menulist
-        list = MenuItem.where(user_id: current_user)
+        list = MenuItem.where(user_id: current_user.id, restaurant_id: list_params[:restaurant])
         render json: list, status: :ok
       end
 
       private
+
+      def list_params
+        params.require(:menulist).permit(:restaurant)
+      end
 
       def menu_params
         params.require(:menuitem).permit(:name, :category_id, :subcategory_id, :restaurant_id, :description, :price,
