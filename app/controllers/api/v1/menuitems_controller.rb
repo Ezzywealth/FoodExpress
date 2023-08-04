@@ -24,7 +24,7 @@ module Api
 
       def create
         menu = MenuItem.new(menu_params)
-        menu.user_id = 1
+        menu.user_id = current_user.id
         menu.foodimg.attach(params[:menuitem][:foodimg]) if params[:menuitem][:foodimg]
         if menu.save
           render json: menu

@@ -3,7 +3,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :categories
       resources :subcategories
-      resources :restaurants
+      resources :restaurants do
+        collection do
+          get 'list'
+        end
+      end
       resources :menuitems do
         collection do
           get 'menulist'

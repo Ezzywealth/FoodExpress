@@ -2,7 +2,7 @@ module Api
   module V1
     class RestaurantsController < ApplicationController
       before_action :set_restaurant, only: %i[edit update show destroy]
-      #  before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
+       before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
 
       def index
         restaurants = Restaurant.all
@@ -11,7 +11,7 @@ module Api
 
       def create
         restaurant = Restaurant.new(restaurant_params)
-        restaurant.user_id = 1
+        restaurant.user_id = current_user.id
         if restaurant.save
           render json: restaurant
         else
@@ -25,6 +25,11 @@ module Api
         else
           render json: @restaurant.errors
         end
+      end
+
+      def list
+        list = Restaurant.where(user_id: current_user.id)
+        render json: list, status: :ok
       end
 
       private

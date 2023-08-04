@@ -11,7 +11,7 @@ module Api
 
       def create
         category = Category.create(category_params)
-        category.user_id = 1
+        category.user_id = current_user
         if category.save
           render json: category
         else

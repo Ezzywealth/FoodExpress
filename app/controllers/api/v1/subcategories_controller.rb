@@ -11,7 +11,7 @@ module Api
 
       def create
         subcat = SubCategory.new(subcategory_params)
-        subcat.user_id = 1
+        subcat.user_id = current_user
         if subcat.save
           render json: subcat
         else
