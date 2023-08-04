@@ -1,9 +1,19 @@
 module Api
   module V1
     class OrdersController < ApplicationController
+      before_action :set_order, only: %i[edit update show destroy]
       def index
         orders = Order.all
         render json: orders, status: :ok
+      end
+
+      def show
+        render json: {
+          id: @order.id,
+          menuItems: @order.menuItems,
+          payment_id: @order.payment_id,
+          total_amount: @order.total_amount
+        }, status: :ok
       end
 
       def create
@@ -48,7 +58,18 @@ module Api
         render json: { payment:, order: }, status: :ok
       end
 
+      def destroy
+        payment = @order.payment
+        payment.destroy
+        render json: Order.all, status: :ok
+      end
+
       private
+
+      def set_order
+        @order = Order.find(params[:id])
+      end
+      
 
       def orders_params
         params.require(:order).permit(:customer_id, menu_ids: %i[menu_id quantity total_price])

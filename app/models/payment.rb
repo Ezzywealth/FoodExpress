@@ -4,8 +4,8 @@ class Payment < ApplicationRecord
   validates :total_amount, presence: true
   validates :customer_id, presence: true
 
-  has_many :orders
-  has_many :restaurant_orders
+  has_many :orders, dependent: :destroy
+  has_many :restaurant_orders, dependent: :destroy
 
   belongs_to :customer
 end

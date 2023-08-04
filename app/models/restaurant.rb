@@ -8,4 +8,5 @@ class Restaurant < ApplicationRecord
   # validates :image, presence: true
 
   has_one_attached :resimg
+  has_many :menuItems, dependent: :destroy
 end

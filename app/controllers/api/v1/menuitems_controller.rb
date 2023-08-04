@@ -2,7 +2,7 @@ module Api
   module V1
     class MenuitemsController < ApplicationController
       before_action :set_menu, only: %i[edit update show destroy]
-      #  before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
+      before_action :authenticate_user!,  only: [:edit, :update, :destory, :create]
 
       def index
         menus = MenuItem.all
@@ -36,6 +36,11 @@ module Api
       def destroy
         @menu.destroy
         render json: MenuItem.all, status: :ok
+      end
+
+      def menulist
+        list = MenuItem.where(user_id: current_user)
+        render json: list, status: :ok
       end
 
       private

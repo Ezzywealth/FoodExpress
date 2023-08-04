@@ -9,4 +9,5 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   has_one_attached :userimg
+  has_many :menuItems
 end

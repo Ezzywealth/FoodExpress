@@ -9,8 +9,10 @@ class MenuItem < ApplicationRecord
   belongs_to :category
   belongs_to :sub_category, foreign_key: 'subcategory_id'
   belongs_to :restaurant
+  belongs_to :user
 
-  has_many :menu_orders
-  has_many :orders, through: :menu_orders
+  has_many :menu_orders, foreign_key: 'menuItem_id', dependent: :destroy
+  has_many :orders, through: :menu_orders, dependent: :destroy
+  has_many :restaurant_orders,foreign_key: 'menuItem_id', dependent: :destroy
   has_one_attached :foodimg
 end

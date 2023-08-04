@@ -4,9 +4,17 @@ Rails.application.routes.draw do
       resources :categories
       resources :subcategories
       resources :restaurants
-      resources :menuitems
+      resources :menuitems do
+        collection do
+          get 'menulist'
+        end
+      end
       resources :menuorders
-      resources :restaurantorders
+      resources :restaurantorders do
+        collection do
+          post 'restaurant'
+        end
+      end
       resources :orders
       resources :customers
       resources :users, only: [:index, :show, :update, :destroy]
