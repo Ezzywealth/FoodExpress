@@ -44,7 +44,7 @@ module Api
           )
           res_order.save
         end
-        # return payment data and order data
+        # return payment data & order data
         render json: { payment:, order: }, status: :ok
       end
 
