@@ -45,7 +45,7 @@ module Api
 
       def budget_params
         params.require(:budget).permit(:name, :amount, :status, :category, :allow_overspending, :frequency,
-                                       :start_date, :end_date, :notes)
+                                       :start_date, :end_date, :notes, :uuid)
       end
 
       def set_budget
