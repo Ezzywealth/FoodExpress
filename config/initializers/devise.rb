@@ -315,7 +315,7 @@ Devise.setup do |config|
 
   # Inside the devise initializer, we will specify that on every login POST request it should append the JWT token to the ‘Authorization’ header as “Bearer + token” when there’s a successful response sent back, and on a logout DELETE request, the token should be revoked.
   config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
+    jwt.secret = 2c48c9efa98164795b9cd16cbea7527d94528560df2683a31d3dbf3ad10b6b59aca51b6757aa01c5dd731d84380852d0c4aa090f15dd36b618d047570109ba7c
     jwt.dispatch_requests = [
       ['POST', %r{^/login$}]
     ]
