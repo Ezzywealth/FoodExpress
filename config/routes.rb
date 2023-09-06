@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :orders
       resources :customers
       resources :users, only: [:index, :show, :update, :destroy]
+      resources :budgetlists, only: [:index, :show, :update, :destroy, :create]
     end
   end
 
